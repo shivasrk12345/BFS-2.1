@@ -1,0 +1,30 @@
+"""
+# Definition for Employee.
+class Employee:
+    def __init__(self, id: int, importance: int, subordinates: List[int]):
+        self.id = id
+        self.importance = importance
+        self.subordinates = subordinates
+"""
+
+from collections import defaultdict
+class Solution:
+    
+    def getEmpImp(self, node, employeesgraph, graph, sumval):
+        
+        for neighbor in employeesgraph[node]:
+            sumval[0] += graph[neighbor];
+            self.getEmpImp(neighbor,employeesgraph, graph, sumval);
+        
+                
+    
+    def getImportance(self, employees: List['Employee'], id: int) -> int:
+        graph = defaultdict(list);
+        employeesgraph = defaultdict(list);
+        for emp in employees:
+            graph[emp.id] = emp.importance;
+            employeesgraph[emp.id] = emp.subordinates
+        sumval = [graph[id]]   
+        self.getEmpImp(id, employeesgraph, graph, sumval)
+        return sumval[0]
+        
