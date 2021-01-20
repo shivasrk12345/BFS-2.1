@@ -1,0 +1,33 @@
+from collections import deque
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        
+        nrows, ncols = len(grid), len(grid[0])
+        
+        # initialize a deque
+        queue = deque();
+        
+        # iterate through the given grid and store the positions of rotten oranges
+        for i in range(nrows):
+            for j in range(ncols):
+                if(grid[i][j] == 2):
+                    queue.append((i, j, 0));
+        
+        # apply bfs 
+        maxlevel = 0
+        while(queue):
+            x, y, level = queue.popleft();
+            maxlevel = level
+            
+            for dx, dy in [[0,1], [0,-1], [1,0], [-1, 0]]:
+                if(0<= x+dx < nrows and 0 <= y + dy <ncols and grid[x+dx][y+dy] !=2 and grid[x+dx][y+dy] != 0):
+                    grid[x+dx][y+dy] = 2;
+                    queue.append((x+dx, y + dy, level + 1));
+        # check wether there are any fresh oranges, if exists, return -1
+        for i in range(nrows):
+            for j in range(ncols):
+                if(grid[i][j] == 1):
+                    return -1;
+        return maxlevel;
+            
+        
